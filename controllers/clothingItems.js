@@ -1,5 +1,15 @@
 const ClothingItem = require("../models/clothingItem");
 
+// BAD_REQUEST_ERROR_CODE = 400;
+// NONEXISTENT_ERROR_CODE = 404;
+//  DEFAULT_ERROR_CODE = 500;
+
+const {
+  BAD_REQUEST_ERROR_CODE,
+  NONEXISTENT_ERROR_CODE,
+  DEFAULT_ERROR_CODE,
+} = require("../utils/errors");
+
 const createItem = (req, res) => {
   console.log(req);
   console.log(req.body);
@@ -28,7 +38,7 @@ const updateItem = (req, res) => {
   const { itemId } = req.params;
   const { imageURL } = req.body;
 
-  ClothingItem.findbyIdAndUpdate(itemId, { $set: { imageURL } })
+  ClothingItem.findByIdAndUpdate(itemId, { $set: { imageURL } })
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
@@ -52,4 +62,8 @@ module.exports = {
   getItems,
   updateItem,
   deleteItem,
+};
+
+module.exports.createItem = (req, res) => {
+  console.log(req.user._id); // _id will become accessible
 };

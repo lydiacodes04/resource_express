@@ -16,6 +16,14 @@ const routes = require("./routes");
 app.use(express.json());
 app.use(routes);
 
+//middleware
+app.use((req, res, next) => {
+  req.user = {
+    _id: "", // paste the _id of the test user created in the previous step
+  };
+  next();
+});
+
 // app.use("/", mainRouter);
 
 app.listen(PORT, () => {
