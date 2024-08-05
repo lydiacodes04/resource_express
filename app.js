@@ -19,7 +19,7 @@ app.use(routes);
 //middleware
 app.use((req, res, next) => {
   req.user = {
-    _id: "", // paste the _id of the test user created in the previous step
+    _id: "66b119770b83d2013e525d7d", // paste the _id of the test user created in the previous step
   };
   next();
 });

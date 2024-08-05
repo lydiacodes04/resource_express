@@ -1,7 +1,9 @@
 
 
-export const BAD_REQUEST_ERROR_CODE = 400;
-export const NONEXISTENT_ERROR_CODE = 404;
-export const DEFAULT_ERROR_CODE = 500;
+const BAD_REQUEST_ERROR_CODE = 400;
+const NONEXISTENT_ERROR_CODE = 404;
+const DEFAULT_ERROR_CODE = 500;
 
-const { BAD_REQUEST_ERROR_CODE} = require("../utils/errors");
+module.exports = {
+  BAD_REQUEST_ERROR_CODE, NONEXISTENT_ERROR_CODE, DEFAULT_ERROR_CODE
+}

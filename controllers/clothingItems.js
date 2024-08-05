@@ -21,16 +21,38 @@ const createItem = (req, res) => {
       console.log(item);
       res.send({ data: item });
     })
-    .catch((e) => {
-      res.status(500).send({ message: "Error from createItem", e });
+    .catch((err) => {
+      console.error(err);
+      // console.log(err.name);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NONEXISTENT_ERROR_CODE)
+          .send({ message: err.message });
+      } else if (err.name === "CastingError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: err.message });
+      }
+      return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });
 };
 
 const getItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
-    .catch((e) => {
-      res.status(500).send({ message: "Error from getItems", e });
+    .catch((err) => {
+      console.error(err);
+      // console.log(err.name);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NONEXISTENT_ERROR_CODE)
+          .send({ message: err.message });
+      } else if (err.name === "CastingError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: err.message });
+      }
+      return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });
 };
 
@@ -41,8 +63,19 @@ const updateItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(itemId, { $set: { imageURL } })
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
-    .catch((e) => {
-      res.status(500).send({ message: "Error from updateItem", e });
+    .catch((err) => {
+      console.error(err);
+      // console.log(err.name);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NONEXISTENT_ERROR_CODE)
+          .send({ message: err.message });
+      } else if (err.name === "CastingError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: err.message });
+      }
+      return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });
 };
 
@@ -52,8 +85,19 @@ const deleteItem = (req, res) => {
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     .then((item) => res.status(204).send({}))
-    .catch((e) => {
-      res.status(500).send({ message: "Error from deleteItem", e });
+    .catch((err) => {
+      console.error(err);
+      // console.log(err.name);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NONEXISTENT_ERROR_CODE)
+          .send({ message: err.message });
+      } else if (err.name === "CastingError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: err.message });
+      }
+      return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });
 };
 
