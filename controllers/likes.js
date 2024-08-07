@@ -10,7 +10,9 @@ module.exports.likeItem = (req, res) =>
     .then((likes) => res.status(200).send(likes))
     .catch((err) => {
       console.error(err);
-      return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server" });
     });
 
 module.exports.dislikeItem = (req, res) =>
@@ -22,5 +24,7 @@ module.exports.dislikeItem = (req, res) =>
     .then((likes) => res.status(200).send(likes))
     .catch((err) => {
       console.error(err);
-      return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server" });
     });
