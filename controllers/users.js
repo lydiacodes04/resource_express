@@ -28,7 +28,7 @@ const createUser = (req, res) => {
       if (err.name === "ValidationError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: err.message });
+          .send({ message: "Invalid data" });
       }
       return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });
@@ -46,10 +46,9 @@ const getUser = (req, res) => {
           .status(NONEXISTENT_ERROR_CODE)
           .send({ message: err.message });
       } else if (err.name === "CastingError") {
-        //handle cast error, bad request
         return res
           .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: err.message });
+          .send({ message: "Invalid data" });
       }
       return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });

@@ -23,7 +23,7 @@ const createItem = (req, res) => {
       if (err.name === "ValidationError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: err.message });
+          .send({ message: "Invalid data" });
       }
       return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });
@@ -54,7 +54,7 @@ const deleteItem = (req, res) => {
       } else if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: err.message });
+          .send({ message: "Invalid data" });
       }
       return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });
