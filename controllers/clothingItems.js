@@ -46,11 +46,10 @@ const deleteItem = (req, res) => {
     .then((item) => res.status(200).send({ item }))
     .catch((err) => {
       console.error(err);
-      // console.log(err.name);
       if (err.name === "DocumentNotFoundError") {
         return res
           .status(NONEXISTENT_ERROR_CODE)
-          .send({ message: err.message });
+          .send({ message: "Requested resource not found" });
       } else if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)

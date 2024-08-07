@@ -1,23 +1,14 @@
 const router = require("express").Router();
-
 const clothingItem = require("./clothingItems");
-
 const users = require("./users");
+
+const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
 
 router.use("/items", clothingItem);
 router.use("/users", users);
 
 router.use((req, res) => {
-  res.status(500).send({ message: "Router not found" });
+  res.status(NONEXISTENT_ERROR_CODE).send({ message: "Router not found" });
 });
 
 module.exports = router;
-
-//OLD code from Kevin's video
-// const router = require("express").Router();
-
-// const userRouter = require("./users");
-
-// router.use("/users", userRouter);
-
-// module.exports = router;

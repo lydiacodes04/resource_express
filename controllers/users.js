@@ -45,7 +45,7 @@ const getUser = (req, res) => {
       if (err.name === "DocumentNotFoundError") {
         return res
           .status(NONEXISTENT_ERROR_CODE)
-          .send({ message: err.message });
+          .send({ message: "Requested resource not found" });
       } else if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
