@@ -7,7 +7,7 @@ const {
 } = require("../utils/errors");
 
 const createItem = (req, res) => {
-  const { name, weather, imageUrl, owner } = req.body;
+  const { name, weather, imageUrl } = req.body;
 
   ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => {
@@ -46,16 +46,16 @@ const deleteItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res
+        return err
           .status(NONEXISTENT_ERROR_CODE)
           .send({ message: "Requested resource not found" });
       }
       if (err.name === "CastError") {
-        return res
+        return err
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      return res
+      return err
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server" });
     });
@@ -67,6 +67,6 @@ module.exports = {
   deleteItem,
 };
 
-module.exports.createItem = (req, res) => {
-  console.log(req.user._id);
-};
+// module.exports.createItem = (req, res) => {
+//   console.log(req.user._id);
+// };
