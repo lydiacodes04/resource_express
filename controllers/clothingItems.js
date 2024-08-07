@@ -1,9 +1,5 @@
 const ClothingItem = require("../models/clothingItem");
 
-// BAD_REQUEST_ERROR_CODE = 400;
-// NONEXISTENT_ERROR_CODE = 404;
-//  DEFAULT_ERROR_CODE = 500;
-
 const {
   BAD_REQUEST_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,

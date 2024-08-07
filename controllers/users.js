@@ -1,7 +1,4 @@
 const User = require("../models/user");
-//BAD_REQUEST_ERROR_CODE = 400;
-//NONEXISTENT_ERROR_CODE = 404;
-//  DEFAULT_ERROR_CODE = 500;
 
 const {
   BAD_REQUEST_ERROR_CODE,
