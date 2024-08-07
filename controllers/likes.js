@@ -1,4 +1,5 @@
-// likeItem, unlikeItem
+const ClothingItem = require("../models/clothingItem");
+const { DEFAULT_ERROR_CODE } = require("../utils/errors");
 
 module.exports.likeItem = (req, res) =>
   ClothingItem.findByIdAndUpdate(
@@ -6,20 +7,9 @@ module.exports.likeItem = (req, res) =>
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .orFail()
-    .then((item) => res.status(200).send({ item }))
+    .then((likes) => res.status(200).send(likes))
     .catch((err) => {
       console.error(err);
-      console.log(err.name);
-      if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(NONEXISTENT_ERROR_CODE)
-          .send({ message: err.message });
-      } else if (err.name === "CastError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: err.message });
-      }
       return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
     });
 
@@ -28,4 +18,9 @@ module.exports.dislikeItem = (req, res) =>
     req.params.itemId,
     { $pull: { likes: req.user._id } },
     { new: true },
-  );
+  )
+    .then((likes) => res.status(200).send(likes))
+    .catch((err) => {
+      console.error(err);
+      return res.status(DEFAULT_ERROR_CODE).send({ message: err.message });
+    });
