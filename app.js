@@ -1,6 +1,9 @@
 const express = require("express");
+
 const mongoose = require("mongoose");
+
 const { PORT = 3001 } = process.env;
+
 const app = express();
 
 mongoose
@@ -10,7 +13,6 @@ mongoose
   })
   .catch(console.error);
 
-//middleware
 app.use((req, res, next) => {
   req.user = {
     _id: "66b119770b83d2013e525d7d",

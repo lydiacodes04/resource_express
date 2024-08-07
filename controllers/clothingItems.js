@@ -40,7 +40,7 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
-  console.log(itemId);
+
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
     .then((item) => res.status(200).send({ item }))
@@ -50,7 +50,8 @@ const deleteItem = (req, res) => {
         return res
           .status(NONEXISTENT_ERROR_CODE)
           .send({ message: "Requested resource not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });

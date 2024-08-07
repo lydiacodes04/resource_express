@@ -46,7 +46,8 @@ const getUser = (req, res) => {
         return res
           .status(NONEXISTENT_ERROR_CODE)
           .send({ message: "Requested resource not found" });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
