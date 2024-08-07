@@ -43,7 +43,7 @@ const deleteItem = (req, res) => {
   console.log(itemId);
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then((item) => res.status(204).send({}))
+    .then((item) => res.status(200).send({ item }))
     .catch((err) => {
       console.error(err);
       // console.log(err.name);
@@ -51,7 +51,7 @@ const deleteItem = (req, res) => {
         return res
           .status(NONEXISTENT_ERROR_CODE)
           .send({ message: err.message });
-      } else if (err.name === "CastingError") {
+      } else if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: err.message });
@@ -63,10 +63,9 @@ const deleteItem = (req, res) => {
 module.exports = {
   createItem,
   getItems,
-  updateItem,
   deleteItem,
 };
 
 module.exports.createItem = (req, res) => {
-  console.log(req.user._id); // _id will become accessible
+  console.log(req.user._id);
 };
