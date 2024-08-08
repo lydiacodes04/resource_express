@@ -1,10 +1,8 @@
 const router = require("express").Router();
-const { likeItem, unlikeItem } = require("../controllers/likes");
+const { likeItem, disLikeItem } = require("../controllers/likes");
 
-// PUT /items/:itemId/likes — like an item
 router.put("/:itemId/likes", likeItem);
 
-// DELETE /items/:itemId/likes — unlike an item
-router.delete("/:itemId/likes", unlikeItem);
+router.delete("/:itemId/likes", disLikeItem);
 
 module.exports = router;

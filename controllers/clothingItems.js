@@ -46,16 +46,16 @@ const deleteItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return err
+        return res
           .status(NONEXISTENT_ERROR_CODE)
           .send({ message: "Requested resource not found" });
       }
       if (err.name === "CastError") {
-        return err
+        return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      return err
+      return res
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server" });
     });
