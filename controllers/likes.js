@@ -1,5 +1,10 @@
 const ClothingItem = require("../models/clothingItem");
-const { DEFAULT_ERROR_CODE } = require("../utils/errors");
+
+const {
+  BAD_REQUEST_ERROR_CODE,
+  NONEXISTENT_ERROR_CODE,
+  DEFAULT_ERROR_CODE,
+} = require("../utils/errors");
 
 module.exports.likeItem = (req, res) =>
   ClothingItem.findByIdAndUpdate(
@@ -8,8 +13,18 @@ module.exports.likeItem = (req, res) =>
     { new: true },
   )
     .then((likes) => res.status(200).send(likes))
+    .orFail()
     .catch((err) => {
       console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NONEXISTENT_ERROR_CODE)
+          .send({ message: "Requested resource not found" });
+      } else if (err.name === "CastError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: "Invalid data" });
+      }
       return res
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server" });
@@ -22,8 +37,18 @@ module.exports.dislikeItem = (req, res) =>
     { new: true },
   )
     .then((likes) => res.status(200).send(likes))
+    .orFail()
     .catch((err) => {
       console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NONEXISTENT_ERROR_CODE)
+          .send({ message: "Requested resource not found" });
+      } else if (err.name === "CastError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: "Invalid data" });
+      }
       return res
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server" });
