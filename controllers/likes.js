@@ -30,7 +30,7 @@ module.exports.likeItem = (req, res) =>
         .send({ message: "An error has occurred on the server" });
     });
 
-module.exports.dislikeItem = (req, res) =>
+module.exports.disLikeItem = (req, res) =>
   ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $pull: { likes: req.user._id } },
