@@ -12,8 +12,8 @@ module.exports.likeItem = (req, res) =>
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((likes) => res.status(200).send(likes))
     .orFail()
+    .then((likes) => res.status(200).send(likes))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
@@ -36,8 +36,8 @@ module.exports.disLikeItem = (req, res) =>
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((likes) => res.status(200).send(likes))
     .orFail()
+    .then((likes) => res.status(200).send(likes))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
