@@ -10,6 +10,7 @@ router.use("/items", clothingItem);
 router.use("/users", users);
 
 const likes = require("./likes");
+
 router.use("/items", likes);
 
 router.use((req, res) => {
