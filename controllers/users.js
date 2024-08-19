@@ -18,7 +18,7 @@ const getUsers = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, avatar } = req.body;
+  const { name, avatar, email, password } = req.body;
 
   User.create({ name, avatar, email, password })
     .then((user) => res.status(201).send(user))
@@ -28,6 +28,10 @@ const createUser = (req, res) => {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
+      }
+      if (err.name === "11000") {
+        //throw
+        return res.status(11000).send({ message: "duplicate error" });
       }
       return res
         .status(DEFAULT_ERROR_CODE)

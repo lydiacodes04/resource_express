@@ -6,6 +6,8 @@ const users = require("./users");
 
 const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
 
+// const auth = require("../middlewares/auth");
+
 router.use("/items", clothingItem);
 router.use("/users", users);
 
