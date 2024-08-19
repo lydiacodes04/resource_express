@@ -4,13 +4,13 @@ const clothingItemsController = require("../controllers/clothingItems");
 
 const {
   createItem,
-  getItems,
+  getAllItems,
   deleteItem,
 } = require("../controllers/clothingItems");
 
 router.post("/", createItem);
 
-router.get("/", getItems);
+router.get("/", getAllItems);
 
 router.delete("/:itemId", deleteItem);
 
