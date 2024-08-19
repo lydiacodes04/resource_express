@@ -1,3 +1,7 @@
+// routes/auth.js
 const router = require("express").Router();
+const { login } = require("../controllers/auth"); // require the login controller
 
-const { login } = require("../controllers/auth");
+router.post("/signin", login);
+
+module.exports = router;

@@ -4,16 +4,17 @@ const clothingItem = require("./clothingItems");
 
 const users = require("./users");
 
-const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
+const likes = require("./likes");
 
+const auth = require("./auth");
 // const auth = require("../middlewares/auth");
+
+const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
 
 router.use("/items", clothingItem);
 router.use("/users", users);
-
-const likes = require("./likes");
-
 router.use("/items", likes);
+router.use("/", auth);
 
 router.use((req, res) => {
   res
