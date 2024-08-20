@@ -7,7 +7,10 @@ const createItem = (req, res) => {
 };
 
 const deleteItem = (req, res) => {
-  res.send("Item deleted");
+  if ((req.params._id = user._id)) {
+    res.send("Item deleted");
+  }
+  return res.status(403).send({ message: "Access forbidden" });
 };
 
 module.exports = {
