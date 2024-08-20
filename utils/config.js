@@ -1,4 +1,6 @@
-const JWT_SECRET = SUSA24!;
+// const auth = require("../routes/auth");
+
+const JWT_SECRET = abcd123!;
 
 module.exports = {
   JWT_SECRET
