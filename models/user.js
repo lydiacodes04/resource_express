@@ -36,7 +36,13 @@ const userSchema = new mongoose.Schema({
       message: "You must enter a valid email address",
     },
   },
-  password: { type: String, required: true, minlength: 8, maxlength: 30 },
+  password: {
+    type: String,
+    required: true,
+    minlength: 8,
+    maxlength: 30,
+    select: false,
+  },
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(
@@ -44,9 +50,9 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
   password,
 ) {
   // trying to find the user by email
-  return this.findOne({ email }) // this — the User model
+  return this.findOne({ email })
+    .select("+password")
     .then((user) => {
-      // not found - rejecting the promise
       if (!user) {
         return Promise.reject(new Error("Incorrect email or password"));
       }
