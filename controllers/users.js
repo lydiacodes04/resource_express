@@ -68,6 +68,7 @@ const getUser = (req, res) => {
 };
 
 module.exports = { getUsers, createUser, getUser };
+
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
@@ -76,7 +77,6 @@ module.exports.login = (req, res) => {
       if (!user) {
         return Promise.reject(new Error("Incorrect email or password"));
       }
-
       return bcrypt.compare(password, user.password);
     })
     .then((matched) => {
@@ -84,15 +84,13 @@ module.exports.login = (req, res) => {
         // the hashes didn't match, rejecting the promise
         return Promise.reject(new Error("Incorrect email or password"));
       }
-
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
       // authentication successful
-      res.send({ message: "Everything good!" });
+      res.send({ token });
     })
     .catch((err) => {
       res.status(401).send({ message: "incorrect email or password", err });
     });
 };
-
-const token = jwt.sign({ _id: User._id }, JWT_SECRET, {
-  expiresIn: "7d",
-});
