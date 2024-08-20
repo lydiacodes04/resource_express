@@ -43,7 +43,7 @@ const createUser = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
+const getCurrentUser = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
     .orFail()
@@ -66,18 +66,43 @@ const getUser = (req, res) => {
     });
 };
 
-module.exports = { getUsers, createUser, getUser };
+const updateProfile = (req, res) => {
+  const { userId } = req.params;
+  return User.findByOneAndUpdate(
+    userId,
+    { name: req.user.name, avatar: req.user.avatar },
+    { new: true, upsert: true },
+  )
+    .orFail()
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NONEXISTENT_ERROR_CODE)
+          .send({ message: "Requested resource not found" });
+      }
+      if (err.name === "CastError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: "Invalid data" });
+      }
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server" });
+    });
+};
+
+module.exports = { getUsers, createUser, getCurrentUser, updateProfile };
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      // authentication successful! user is in the user variable
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-      // authentication successful
       res.send({ token });
     })
     .catch((err) => {
