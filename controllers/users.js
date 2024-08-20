@@ -8,7 +8,6 @@ const {
   BAD_REQUEST_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,
   DEFAULT_ERROR_CODE,
-  UNAUTHORIZED_ERROR_CODE,
 } = require("../utils/errors");
 
 const getUsers = (req, res) => {

@@ -12,7 +12,7 @@ const login = (req, res) => {
         .send({ message: "An error has occurred on the server" });
     });
 
-  res.send({ message: "Login successful" }); // change this to your actual login response
+  res.send({ message: "Login successful" });
 };
 
 module.exports = {
