@@ -2,7 +2,7 @@ const User = require("../models/user");
 
 const jwt = require("jsonwebtoken");
 
-const { JWT_SECRET } = require("..utils/config");
+const { JWT_SECRET } = require("../utils/config");
 
 const {
   BAD_REQUEST_ERROR_CODE,

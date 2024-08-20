@@ -1,7 +1,5 @@
-// const auth = require("../routes/auth");
-
-const JWT_SECRET = abcd123!;
+const JWT_SECRET = "abcd123";
 
 module.exports = {
-  JWT_SECRET
+  JWT_SECRET,
 };

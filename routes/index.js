@@ -6,14 +6,19 @@ const users = require("./users");
 
 const likes = require("./likes");
 
-const auth = require("./auth");
-
 const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
+
+const { login } = require("../controllers/auth");
+
+const { createUser } = require("../controllers/users");
+
+router.post("/signin", login);
+
+router.post("/signup", createUser);
 
 router.use("/items", clothingItem);
 router.use("/users", users);
 router.use("/items", likes);
-router.use("/", auth);
 
 router.use((req, res) => {
   res
