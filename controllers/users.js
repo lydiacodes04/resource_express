@@ -60,7 +60,7 @@ const login = (req, res) => {
         return user;
       });
     })
-    .then((user) => res.status(200).send({ message: "Login successful" }))
+    .then(() => res.status(200).send({ message: "Login successful" }))
     .catch((err) => {
       console.error(err);
       return res
