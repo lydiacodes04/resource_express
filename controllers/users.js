@@ -46,15 +46,26 @@ const login = (req, res) => {
   const { email, password } = req.body;
   User.findBy(email)
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .select("+password")
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error("Incorrect email or password"));
+      }
+      // found - comparing hashes
+      return bcrypt.compare(password, user.password).then((matched) => {
+        if (!matched) {
+          return Promise.reject(new Error("Incorrect email or password"));
+        }
+        return user;
+      });
+    })
+    .then((user) => res.status(200).send({ message: "Login successful" }))
     .catch((err) => {
       console.error(err);
       return res
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server" });
     });
-
-  res.send({ message: "Login successful" });
 };
 
 const getCurrentUser = (req, res) => {
