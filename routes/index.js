@@ -8,9 +8,7 @@ const likes = require("./likes");
 
 const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
 
-const { login } = require("../controllers/auth");
-
-const { createUser } = require("../controllers/users");
+const { createUser, login } = require("../controllers/users");
 
 router.post("/signin", login);
 

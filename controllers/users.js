@@ -43,6 +43,21 @@ const createUser = (req, res) => {
     });
 };
 
+const login = (req, res) => {
+  const { email, password } = req.body;
+  User.findBy(email)
+    .orFail()
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      console.error(err);
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server" });
+    });
+
+  res.send({ message: "Login successful" });
+};
+
 const getCurrentUser = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
@@ -93,7 +108,7 @@ const updateProfile = (req, res) => {
     });
 };
 
-module.exports = { getUsers, createUser, getCurrentUser, updateProfile };
+module.exports = { getUsers, createUser, login, getCurrentUser, updateProfile };
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
