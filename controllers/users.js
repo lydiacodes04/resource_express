@@ -34,7 +34,6 @@ const createUser = (req, res) => {
           .send({ message: "Invalid data" });
       }
       if (err.name === "11000") {
-        //throw
         return res.status(11000).send({ message: "duplicate error" });
       }
       return res
