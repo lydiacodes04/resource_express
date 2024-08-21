@@ -7,7 +7,7 @@ const createItem = (req, res) => {
 };
 
 const deleteItem = (req, res) => {
-  if ((req.params._id = user._id)) {
+  if ((req.params._id = req.user._id)) {
     res.send("Item deleted");
   }
   return res.status(403).send({ message: "Access forbidden" });
