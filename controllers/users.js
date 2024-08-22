@@ -35,24 +35,32 @@ const createUser = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
-  User.findBy(email)
+
+  User.findUserByCredentials(email, password)
     .orFail()
-    .select("+password")
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error("Incorrect email or password"));
       }
-      return bcrypt.compare(password, user.password).then((matched) => {
-        if (!matched) {
-          return Promise.reject(new Error("Incorrect email or password"));
-        }
-        return user;
-      });
+      return bcrypt
+        .compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return Promise.reject(new Error("Incorrect email or password"));
+          }
+          return user;
+        })
+        .then(() => {
+          const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+            expiresIn: "7d",
+          });
+          res.send({ token });
+        });
     })
     .then(() => res.status(200).send({ message: "Login successful" }))
     .catch((err) => {
       console.error(err);
-      if (err.message === "Incorrect email or password") {
+      if ((err.message === "Incorrect email or password", err)) {
         return res
           .status(UNAUTHORIZED_ERROR_CODE)
           .send({ message: "Login unauthorized" });
@@ -86,18 +94,13 @@ const updateProfile = (req, res) => {
   return User.findByOneAndUpdate(
     { _id: req.user._id },
     { name: req.user.name, avatar: req.user.avatar },
-    { new: true, upsert: true },
+    { new: true, runValidators: true },
   )
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
-      if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(NONEXISTENT_ERROR_CODE)
-          .send({ message: "Requested resource not found" });
-      }
-      if (err.name === "CastError") {
+      if (err.name === "ValidationError") {
         return res
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
@@ -109,18 +112,3 @@ const updateProfile = (req, res) => {
 };
 
 module.exports = { createUser, login, getCurrentUser, updateProfile };
-
-module.exports.login = (req, res) => {
-  const { email, password } = req.body;
-
-  return User.findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-        expiresIn: "7d",
-      });
-      res.send({ token });
-    })
-    .catch((err) => {
-      res.status(401).send({ message: "incorrect email or password", err });
-    });
-};
