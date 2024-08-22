@@ -14,6 +14,4 @@ router.get("/", getAllItems);
 
 router.delete("/:itemId", deleteItem);
 
-router.get("/", clothingItemsController.getAllItems);
-
 module.exports = router;
