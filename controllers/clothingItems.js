@@ -68,6 +68,7 @@ const deleteItem = (req, res) => {
           .status(NONEXISTENT_ERROR_CODE)
           .send({ message: "Requested resource not found" });
       }
+      return res.status(200).send();
     });
 };
 

@@ -65,7 +65,7 @@ const login = (req, res) => {
           .send({ message: "Login unauthorized" });
       }
     });
-  return User;
+  res.status(200).send(User);
 };
 
 const getCurrentUser = (req, res) => {
@@ -88,10 +88,11 @@ const getCurrentUser = (req, res) => {
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server" });
     });
+  res.status(200).send(User);
 };
 
 const updateProfile = (req, res) => {
-  return User.findByOneAndUpdate(
+  User.findByOneAndUpdate(
     { _id: req.user._id },
     { name: req.user.name, avatar: req.user.avatar },
     { new: true, runValidators: true },
