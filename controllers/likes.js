@@ -3,7 +3,6 @@ const clothingItem = require("../models/clothingItem");
 const {
   BAD_REQUEST_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,
-  DEFAULT_ERROR_CODE,
 } = require("../utils/errors");
 
 module.exports.likeItem = (req, res) =>

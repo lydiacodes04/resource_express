@@ -59,12 +59,13 @@ const login = (req, res) => {
     .then(() => res.status(200).send({ message: "Login successful" }))
     .catch((err) => {
       console.error(err);
-      if ((err.message === "Incorrect email or password", err)) {
+      if (err.message === "Incorrect email or password") {
         return res
           .status(UNAUTHORIZED_ERROR_CODE)
           .send({ message: "Login unauthorized" });
       }
     });
+  return User;
 };
 
 const getCurrentUser = (req, res) => {
