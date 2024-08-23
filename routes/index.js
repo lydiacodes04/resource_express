@@ -6,6 +6,8 @@ const users = require("./users");
 
 const likes = require("./likes");
 
+const auth = require("../middlewares/auth");
+
 const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
 
 const { createUser, login } = require("../controllers/users");
@@ -14,9 +16,9 @@ router.post("/signin", login);
 
 router.post("/signup", createUser);
 
-router.use("/items", clothingItem);
+router.use("/items", auth, clothingItem);
 router.use("/users", users);
-router.use("/items", likes);
+router.use("/items", auth, likes);
 
 router.use((req, res) => {
   res

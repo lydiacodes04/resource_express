@@ -1,4 +1,11 @@
-const ClothingItem = require("../models/clothingItem");
+// const ClothingItem = require("../models/clothingItem");
+
+const {
+  BAD_REQUEST_ERROR_CODE,
+  DEFAULT_ERROR_CODE,
+} = require("../utils/errors");
+
+//NONEXISTENT_ERROR_CODE, UNAUTHORIZED_ERROR_CODE
 
 const getAllItems = (req, res) => {
   const { clothingItems } = req.body;
@@ -17,8 +24,6 @@ const getAllItems = (req, res) => {
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server" });
     });
-
-  res.status(200).json(items);
 };
 
 const createItem = (req, res) => {
