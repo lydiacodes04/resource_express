@@ -1,11 +1,5 @@
 const router = require("express").Router();
 
-// const express = require("express");
-// const bodyParser = require("body-parser");
-// const mongoose = require("mongoose");
-
-// const clothingItemsController = require("../controllers/clothingItems");
-
 const {
   createItem,
   getAllItems,

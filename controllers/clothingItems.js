@@ -1,9 +1,4 @@
-// const ClothingItem = require("../models/clothingItem");
-
-const {
-  BAD_REQUEST_ERROR_CODE,
-  DEFAULT_ERROR_CODE,
-} = require("../utils/errors");
+const { BAD_REQUEST_ERROR_CODE } = require("../utils/errors");
 
 const getAllItems = (req, res) => {
   const { clothingItems } = req.body;
