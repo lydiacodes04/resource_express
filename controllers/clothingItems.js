@@ -38,7 +38,12 @@ const createItem = (req, res) => {
           .send({ message: "Invalid data" });
       }
       if (err.name === 11000) {
-        return res.status(409).send({ message: "duplicate error" });
+        return res.status(409).send({ message: "Duplicate error" });
+      }
+      if (err.name == "401") {
+        return res
+          .status(UNAUTHORIZED_ERROR_CODE)
+          .send({ message: "Unauthorized request" });
       }
       return res.status(201).send(clothingItem);
     });

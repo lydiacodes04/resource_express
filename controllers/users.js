@@ -10,7 +10,6 @@ const {
   BAD_REQUEST_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,
   DEFAULT_ERROR_CODE,
-  UNAUTHORIZED_ERROR_CODE,
 } = require("../utils/errors");
 
 const createUser = (req, res) => {
@@ -55,16 +54,8 @@ const login = (req, res) => {
           });
           res.send({ token });
         });
-    })
-    .then(() => res.status(200).send({ message: "Login successful" }))
-    .catch((err) => {
-      console.error(err);
-      if (err.message === "Incorrect email or password") {
-        return res
-          .status(UNAUTHORIZED_ERROR_CODE)
-          .send({ message: "Login unauthorized" });
-      }
     });
+
   res.status(200).send(User);
 };
 
