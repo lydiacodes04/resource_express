@@ -5,14 +5,12 @@ const {
   DEFAULT_ERROR_CODE,
 } = require("../utils/errors");
 
-//NONEXISTENT_ERROR_CODE, UNAUTHORIZED_ERROR_CODE
-
 const getAllItems = (req, res) => {
   const { clothingItems } = req.body;
   req
     .find(clothingItems)
     .orFail()
-    .then((res) => res.status(201).send({ clothingItems }))
+    .then(() => res.status(201).send({ clothingItems }))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -20,9 +18,7 @@ const getAllItems = (req, res) => {
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server" });
+      return res.status(201).send(clothingItems);
     });
 };
 

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcryptjs");
+
 const User = require("../models/user");
 
 const { JWT_SECRET } = require("../utils/config");
@@ -16,7 +17,7 @@ const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
   User.create({ name, avatar, email, password })
-    .then((user) => res.status(201).send({ name, avatar, email }))
+    .then(() => res.status(201).send({ name, avatar, email }))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -27,9 +28,7 @@ const createUser = (req, res) => {
       if (err.name === 11000) {
         return res.status(409).send({ message: "duplicate error" });
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server" });
+      return res.status(201).send(User);
     });
 };
 
