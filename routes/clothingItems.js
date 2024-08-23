@@ -1,6 +1,10 @@
 const router = require("express").Router();
 
-const clothingItemsController = require("../controllers/clothingItems");
+// const express = require("express");
+// const bodyParser = require("body-parser");
+// const mongoose = require("mongoose");
+
+// const clothingItemsController = require("../controllers/clothingItems");
 
 const {
   createItem,
@@ -8,10 +12,12 @@ const {
   deleteItem,
 } = require("../controllers/clothingItems");
 
-router.post("/", createItem);
-
 router.get("/", getAllItems);
 
-router.delete("/:itemId", deleteItem);
+const auth = require("../middlewares/auth");
+
+router.post("/", auth, createItem);
+
+router.delete("/:itemId", auth, deleteItem);
 
 module.exports = router;

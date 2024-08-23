@@ -8,8 +8,10 @@ const { getCurrentUser, updateProfile } = require("../controllers/users");
 // router.get("/:userId", getCurrentUser);
 // router.patch("/:userId", updateProfile);
 
-router.get("/users/me", getCurrentUser);
+const auth = require("../middlewares/auth");
 
-router.patch("/users/me", updateProfile);
+router.get("/users/me", auth, getCurrentUser);
+
+router.patch("/users/me", auth, updateProfile);
 
 module.exports = router;
