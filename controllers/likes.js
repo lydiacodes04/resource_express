@@ -1,4 +1,4 @@
-const ClothingItem = require("../models/clothingItem");
+const clothingItem = require("../models/clothingItem");
 
 const {
   BAD_REQUEST_ERROR_CODE,
@@ -7,11 +7,12 @@ const {
 } = require("../utils/errors");
 
 module.exports.likeItem = (req, res) =>
-  ClothingItem.findByIdAndUpdate(
-    req.params.itemId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true },
-  )
+  clothingItem
+    .findByIdAndUpdate(
+      req.params.itemId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true },
+    )
     .orFail()
     .then((likes) => res.status(200).send(likes))
     .catch((err) => {
@@ -26,17 +27,16 @@ module.exports.likeItem = (req, res) =>
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server" });
+      return clothingItem;
     });
 
 module.exports.disLikeItem = (req, res) =>
-  ClothingItem.findByIdAndUpdate(
-    req.params.itemId,
-    { $pull: { likes: req.user._id } },
-    { new: true },
-  )
+  clothingItem
+    .findByIdAndUpdate(
+      req.params.itemId,
+      { $pull: { likes: req.user._id } },
+      { new: true },
+    )
     .orFail()
     .then((likes) => res.status(200).send(likes))
     .catch((err) => {
@@ -51,7 +51,5 @@ module.exports.disLikeItem = (req, res) =>
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server" });
+      return clothingItem;
     });

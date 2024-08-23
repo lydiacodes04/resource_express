@@ -36,9 +36,8 @@ const createItem = (req, res) => {
       if (err.name === 11000) {
         return res.status(409).send({ message: "duplicate error" });
       }
-      return res.status(201).send(User);
+      return res.status(201).send(clothingItem);
     });
-  res.send("Item created");
 };
 
 const deleteItem = (req, res) => {
