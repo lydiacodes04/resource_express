@@ -1,4 +1,8 @@
-const { BAD_REQUEST_ERROR_CODE } = require("../utils/errors");
+const {
+  BAD_REQUEST_ERROR_CODE,
+  FORBIDDEN_ERROR_CODE,
+  NONEXISTENT_ERROR_CODE,
+} = require("../utils/errors");
 
 const clothingItem = require("../models/clothingItem");
 
@@ -21,7 +25,7 @@ const getAllItems = (req, res) => {
 
 const createItem = (req, res) => {
   const { name, imageUrl, weather } = req.body;
-  const { owner } = req.user._id;
+  const owner = req.user._id;
 
   clothingItem
     .create(name, imageUrl, weather, owner)
@@ -41,10 +45,30 @@ const createItem = (req, res) => {
 };
 
 const deleteItem = (req, res) => {
-  if ((req.params._id = req.user._id)) {
-    res.send("Item deleted");
-  }
-  return res.status(403).send({ message: "Access forbidden" });
+  clothingItem
+    .findById(req.params.itemId)
+    .orFail()
+    .then((item) => {
+      if (!item.owner.toString() === req.user._id) {
+        const error = new Error();
+        error.name = "ForbiddenError";
+        throw error;
+      }
+      return res.status(201).send(clothingItem);
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "ForbiddenError") {
+        return res
+          .status(FORBIDDEN_ERROR_CODE)
+          .send({ message: "Access forbidden" });
+      }
+      if (err.name === "DocumentNotFoundError") {
+        return res
+          .status(NONEXISTENT_ERROR_CODE)
+          .send({ message: "Requested resource not found" });
+      }
+    });
 };
 
 module.exports = {
