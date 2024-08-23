@@ -1,5 +1,24 @@
+const ClothingItem = require("../models/clothingItem");
+
 const getAllItems = (req, res) => {
-  res.send({ message: "All clothing items" });
+  const { clothingItems } = req.body;
+  req
+    .find(clothingItems)
+    .orFail()
+    .then((res) => res.status(201).send({ clothingItems }))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "ValidationError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: "Invalid data" });
+      }
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server" });
+    });
+
+  res.status(200).json(items);
 };
 
 const createItem = (req, res) => {
