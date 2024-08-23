@@ -2,6 +2,7 @@ const {
   BAD_REQUEST_ERROR_CODE,
   FORBIDDEN_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,
+  UNAUTHORIZED_ERROR_CODE,
 } = require("../utils/errors");
 
 const clothingItem = require("../models/clothingItem");
@@ -40,7 +41,7 @@ const createItem = (req, res) => {
       if (err.name === 11000) {
         return res.status(409).send({ message: "Duplicate error" });
       }
-      if (err.name == "401") {
+      if (err.name === "401") {
         return res
           .status(UNAUTHORIZED_ERROR_CODE)
           .send({ message: "Unauthorized request" });
