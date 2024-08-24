@@ -19,11 +19,6 @@ mongoose
   })
   .catch(console.error);
 
-app.use((req, res, next) => {
-  req.user = { auth };
-  next();
-});
-
 const routes = require("./routes");
 
 app.use(express.json());
