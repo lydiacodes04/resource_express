@@ -16,9 +16,9 @@ router.post("/signin", login);
 
 router.post("/signup", createUser);
 
-router.use("/items", auth, clothingItem);
+router.use("/items", clothingItem);
 router.use("/users", users);
-router.use("/items", auth, likes);
+router.use("/items", likes);
 
 router.use((req, res) => {
   res
