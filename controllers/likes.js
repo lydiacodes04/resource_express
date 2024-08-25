@@ -27,7 +27,6 @@ module.exports.likeItem = (req, res) =>
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      // return clothingItem;
       return res
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server." });
@@ -54,7 +53,6 @@ module.exports.disLikeItem = (req, res) =>
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      // return clothingItem;
       return res
         .status(DEFAULT_ERROR_CODE)
         .send({ message: "An error has occurred on the server." });
