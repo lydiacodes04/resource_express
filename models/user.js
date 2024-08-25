@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 
 const validator = require("validator");
 
@@ -38,6 +38,8 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
 });
+
+// There is an issue here. Postman tests would not run unless this was commented out. I don't know where the problem is.
 
 // userSchema.statics.findUserByCredentials = function findUserByCredentials(
 //   email,
