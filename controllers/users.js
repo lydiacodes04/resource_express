@@ -54,6 +54,17 @@ const login = (req, res) => {
         }
         return user;
       })
+      .catch((err) => {
+        console.error(err);
+        if (err.message === "Incorrect email or password") {
+          return res
+            .status(UNAUTHORIZED_ERROR_CODE)
+            .send({ message: "Authorization Required" });
+        }
+        return res
+          .status(DEFAULT_ERROR_CODE)
+          .send({ message: "An error has occurred on the server." });
+      })
       .then(() => {
         const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
           expiresIn: "7d",
