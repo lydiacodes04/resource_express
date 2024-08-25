@@ -2,7 +2,6 @@ const {
   BAD_REQUEST_ERROR_CODE,
   FORBIDDEN_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,
-  UNAUTHORIZED_ERROR_CODE,
   DEFAULT_ERROR_CODE,
 } = require("../utils/errors");
 
@@ -61,6 +60,11 @@ const deleteItem = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      if (err.name === "CastError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: "Invalid data" });
+      }
       if (err.name === "ForbiddenError") {
         return res
           .status(FORBIDDEN_ERROR_CODE)
