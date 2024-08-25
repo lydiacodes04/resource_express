@@ -20,22 +20,6 @@ const createUser = (req, res) => {
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, avatar, email, password: hash }))
-    .catch((err) => {
-      console.error(err);
-      if (err.name === "ValidationError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
-      }
-      if (err.code === 11000) {
-        return res
-          .status(CONFLICT_ERROR_CODE)
-          .send({ message: "Duplicate error" });
-      }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
-    })
     .then(() => res.status(201).send({ name, avatar, email }))
     .catch((err) => {
       console.error(err);
@@ -58,47 +42,24 @@ const createUser = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findUserByCredentials({ email, password }).then((user) => {
-    if (!user) {
-      return Promise.reject(new Error("Incorrect email or password"));
-    }
-    return bcrypt
-      .compare(password, user.password)
-      .then((matched) => {
-        if (!matched) {
-          return Promise.reject(new Error("Incorrect email or password"));
-        }
-        return user;
-      })
-      .catch((err) => {
-        console.error(err);
-        if (err.message === "Incorrect email or password") {
-          return res
-            .status(UNAUTHORIZED_ERROR_CODE)
-            .send({ message: "Authorization Required" });
-        }
-        return res
-          .status(DEFAULT_ERROR_CODE)
-          .send({ message: "An error has occurred on the server." });
-      })
-      .then(() => {
-        const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-          expiresIn: "7d",
-        });
-        res.send({ token });
-      })
-      .catch((err) => {
-        console.error(err);
-        if (err.message === "Incorrect email or password") {
-          return res
-            .status(UNAUTHORIZED_ERROR_CODE)
-            .send({ message: "Authorization Required" });
-        }
-        return res
-          .status(DEFAULT_ERROR_CODE)
-          .send({ message: "An error has occurred on the server." });
+  User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+        expiresIn: "7d",
       });
-  });
+      res.send({ token });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.message === "Incorrect email or password") {
+        return res
+          .status(UNAUTHORIZED_ERROR_CODE)
+          .send({ message: "Authorization Required" });
+      }
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server." });
+    });
 };
 
 const getCurrentUser = (req, res) => {
