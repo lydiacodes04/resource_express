@@ -3,6 +3,7 @@ const {
   FORBIDDEN_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,
   UNAUTHORIZED_ERROR_CODE,
+  DEFAULT_ERROR_CODE,
 } = require("../utils/errors");
 
 const clothingItem = require("../models/clothingItem");
@@ -20,7 +21,9 @@ const getAllItems = (req, res) => {
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      return res.status(201).send(clothingItems);
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -38,15 +41,9 @@ const createItem = (req, res) => {
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      if (err.name === 11000) {
-        return res.status(409).send({ message: "Duplicate error" });
-      }
-      if (err.name === "401") {
-        return res
-          .status(UNAUTHORIZED_ERROR_CODE)
-          .send({ message: "Unauthorized request" });
-      }
-      return res.status(201).send(clothingItem);
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
