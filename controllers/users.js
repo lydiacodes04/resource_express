@@ -20,6 +20,22 @@ const createUser = (req, res) => {
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, avatar, email, password: hash }))
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "ValidationError") {
+        return res
+          .status(BAD_REQUEST_ERROR_CODE)
+          .send({ message: "Invalid data" });
+      }
+      if (err.code === 11000) {
+        return res
+          .status(CONFLICT_ERROR_CODE)
+          .send({ message: "Duplicate error" });
+      }
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server." });
+    })
     .then(() => res.status(201).send({ name, avatar, email }))
     .catch((err) => {
       console.error(err);
