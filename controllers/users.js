@@ -58,7 +58,7 @@ const createUser = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findUserByCredentials(email, password).then((user) => {
+  User.findUserByCredentials({ email, password }).then((user) => {
     if (!user) {
       return Promise.reject(new Error("Incorrect email or password"));
     }
