@@ -108,9 +108,9 @@ const getCurrentUser = (req, res) => {
 };
 
 const updateProfile = (req, res) => {
-  User.findByOneAndUpdate(
+  User.findByIdAndUpdate(
     { _id: req.user._id },
-    { name: req.user.name, avatar: req.user.avatar },
+    { name: req.body.name, avatar: req.body.avatar },
     { new: true, runValidators: true },
   )
     .orFail()
