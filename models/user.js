@@ -49,12 +49,25 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
       if (!user) {
         return Promise.reject(new Error("Incorrect email or password"));
       }
-      return bcrypt.compare(password, user.password).then((matched) => {
-        if (!matched) {
-          return Promise.reject(new Error("Incorrect email or password"));
-        }
-        return user;
-      });
+      return bcrypt
+        .compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return Promise.reject(new Error("Incorrect email or password"));
+          }
+          return user;
+        })
+        .catch((err) => {
+          console.error(err);
+          if (err.code === 11000) {
+            return res
+              .status(CONFLICT_ERROR_CODE)
+              .send({ message: "Duplicate error" });
+          }
+          return res
+            .status(DEFAULT_ERROR_CODE)
+            .send({ message: "An error has occurred on the server." });
+        });
     });
 };
 
