@@ -10,12 +10,15 @@ const {
   BAD_REQUEST_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,
   DEFAULT_ERROR_CODE,
+  CONFLICT_ERROR_CODE,
+  UNAUTHORIZED_ERROR_CODE,
 } = require("../utils/errors");
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  User.create({ name, avatar, email, password })
+  bcrypt
+    .hash({ name, avatar, email, password })
     .then(() => res.status(201).send({ name, avatar, email }))
     .catch((err) => {
       console.error(err);
@@ -24,39 +27,50 @@ const createUser = (req, res) => {
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      if (err.name === 11000) {
-        return res.status(409).send({ message: "duplicate error" });
+      if (err.code === 11000) {
+        return res
+          .status(CONFLICT_ERROR_CODE)
+          .send({ message: "Duplicate error" });
       }
-      return res.status(201).send(User);
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findUserByCredentials(email, password)
-    .orFail()
-    .then((user) => {
-      if (!user) {
-        return Promise.reject(new Error("Incorrect email or password"));
-      }
-      return bcrypt
-        .compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            return Promise.reject(new Error("Incorrect email or password"));
-          }
-          return user;
-        })
-        .then(() => {
-          const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-            expiresIn: "7d",
-          });
-          res.send({ token });
+  User.findUserByCredentials(email, password).then((user) => {
+    if (!user) {
+      return Promise.reject(new Error("Incorrect email or password"));
+    }
+    return bcrypt
+      .compare(password, user.password)
+      .then((matched) => {
+        if (!matched) {
+          return Promise.reject(new Error("Incorrect email or password"));
+        }
+        return user;
+      })
+      .then(() => {
+        const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+          expiresIn: "7d",
         });
-    });
-
-  res.status(200).send(User);
+        res.send({ token });
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.message === "Incorrect email or password") {
+          return res
+            .status(UNAUTHORIZED_ERROR_CODE)
+            .send({ message: "Authorization Required" });
+        }
+        return res
+          .status(DEFAULT_ERROR_CODE)
+          .send({ message: "An error has occurred on the server." });
+      });
+  });
 };
 
 const getCurrentUser = (req, res) => {
@@ -77,9 +91,8 @@ const getCurrentUser = (req, res) => {
       }
       return res
         .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server" });
+        .send({ message: "An error has occurred on the server." });
     });
-  res.status(200).send(User);
 };
 
 const updateProfile = (req, res) => {
@@ -99,7 +112,7 @@ const updateProfile = (req, res) => {
       }
       return res
         .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server" });
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
