@@ -9,9 +9,8 @@ const clothingItem = require("../models/clothingItem");
 
 const getAllItems = (req, res) => {
   const { clothingItems } = req.body;
-  req
-    .find(clothingItems)
-    .orFail()
+  clothingItem
+    .find()
     .then(() => res.status(201).send({ clothingItems }))
     .catch((err) => {
       console.error(err);
@@ -31,8 +30,8 @@ const createItem = (req, res) => {
   const owner = req.user._id;
 
   clothingItem
-    .create(name, imageUrl, weather, owner)
-    .then(() => res.status(201).send(name, imageUrl, weather, owner))
+    .create({ name, imageUrl, weather, owner })
+    .then(() => res.status(201).send({ name, imageUrl, weather, owner }))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -51,12 +50,14 @@ const deleteItem = (req, res) => {
     .findById(req.params.itemId)
     .orFail()
     .then((item) => {
-      if (!item.owner.toString() === req.user._id) {
+      if (item.owner.toString() !== req.user._id) {
         const error = new Error();
         error.name = "ForbiddenError";
         throw error;
       }
-      return res.status(201).send(clothingItem);
+      return item
+        .deleteOne()
+        .then((deletedItem) => res.status(201).send(deletedItem));
     })
     .catch((err) => {
       console.error(err);
