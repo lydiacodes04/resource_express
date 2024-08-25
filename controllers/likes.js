@@ -3,6 +3,7 @@ const clothingItem = require("../models/clothingItem");
 const {
   BAD_REQUEST_ERROR_CODE,
   NONEXISTENT_ERROR_CODE,
+  DEFAULT_ERROR_CODE,
 } = require("../utils/errors");
 
 module.exports.likeItem = (req, res) =>
@@ -26,7 +27,10 @@ module.exports.likeItem = (req, res) =>
           .status(BAD_REQUEST_ERROR_CODE)
           .send({ message: "Invalid data" });
       }
-      return clothingItem;
+      // return clothingItem;
+      return res
+        .status(DEFAULT_ERROR_CODE)
+        .send({ message: "An error has occurred on the server." });
     });
 
 module.exports.disLikeItem = (req, res) =>
