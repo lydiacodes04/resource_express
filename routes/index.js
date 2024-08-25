@@ -6,8 +6,6 @@ const users = require("./users");
 
 const likes = require("./likes");
 
-const auth = require("../middlewares/auth");
-
 const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
 
 const { createUser, login } = require("../controllers/users");
