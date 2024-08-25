@@ -8,10 +8,9 @@ const {
 const clothingItem = require("../models/clothingItem");
 
 const getAllItems = (req, res) => {
-  const { clothingItems } = req.body;
   clothingItem
     .find()
-    .then(() => res.status(201).send({ clothingItems }))
+    .then((clothingItems) => res.status(201).send({ clothingItems }))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
