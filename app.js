@@ -8,6 +8,8 @@ const app = express();
 
 const cors = require("cors");
 
+// const errorHandler = require("./middlewares/error-handler");
+
 app.use(cors());
 
 mongoose
@@ -22,6 +24,8 @@ const routes = require("./routes");
 app.use(express.json());
 
 app.use(routes);
+
+// app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
