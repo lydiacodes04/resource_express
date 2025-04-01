@@ -10,6 +10,8 @@ const cors = require("cors");
 
 // const errorHandler = require("./middlewares/error-handler");
 
+const { errors } = require("celebrate");
+
 app.use(cors());
 
 mongoose
@@ -26,6 +28,7 @@ app.use(express.json());
 app.use(routes);
 
 // app.use(errorHandler);
+app.use(errors()); // celebrate error handler
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
