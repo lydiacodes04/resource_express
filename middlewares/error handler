@@ -1,12 +1,89 @@
-// app.use((err, req, res, next) => {
-//   console.error(err);
-//   return res.status(500).send({ message: "An error occurred on the server" });
-// });
+const jwt = require("jsonwebtoken");
 
-// app.listen(PORT);
+app.use((err, req, res, next) => {
+  console.error(err);
+  return res.status(500).send({ message: "An error occurred on the server" });
+});
+
+app.listen(PORT);
 
 // BadRequestError — status code 400
 // UnauthorizedError — status code 401
 // ForbiddenError — status code 403
 // NotFoundError — status code 404
 // ConflictError — status code 409
+
+// next(new Error('Authorization error'));
+
+// app.use((err, req, res, next) => {
+//   console.error(err);
+//   res.send({ message: err.message });
+// });
+
+// { "message": "Authorization error" }
+
+// try {
+//   payload = jwt.verify(token, 'some-secret-key');
+// } catch (e) {
+//   const err = new Error('Authorization required');
+//   err.statusCode = 401;
+
+//   next(err);
+// }
+
+// .catch((err) => {
+//   if (err.name === "CastError") {
+//     next(new BadRequestError("The id string is in an invalid format");
+//   } else {
+//     next(err);
+//   }
+// );
+
+const NotFoundError = require("./errors/not-found-err");
+
+module.exports.getProfile = (req, res, next) =>
+  User.findOne({ _id: req.params.userId })
+    .then((user) => {
+      if (!user) {
+        // if there is no such user,
+        // throw an exception
+        throw new NotFoundError("No user with matching ID found");
+      }
+
+      res.send(user);
+    })
+    .catch(next);
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(err.statusCode).send({ message: err.message });
+});
+
+// const BadRequestError = require('./errors/bad-request-err');
+
+// module.exports.getProfile = (req, res, next) => User
+//   .findOne({ _id: req.params.userId })
+//   .then((user) => {
+//     if (!user) {
+//       throw new NotFoundError('No user with matching ID found');
+//     }
+
+//     res.send(user);
+//   })
+//   .catch((err) => {
+//     if (err.name === "CastError") {
+//       next(new BadRequestError("The id string is in an invalid format");
+//     } else {
+//       next(err);
+//     }
+//   );
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  // if an error has no status, set it to 500
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    // check the status and display a message based on it
+    message: statusCode === 500 ? "An error occurred on the server" : message,
+  });
+});
