@@ -27,9 +27,13 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use(errors()); // celebrate error handler
+// app.use(requestLogger);
+// app.use(routes);
 
-// app.use(errorHandler);
+// app.use(errorLogger); // enabling the error logger
+
+// app.use(errors()); // celebrate error handler
+// app.use(errorHandler); //centralized error handler
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
