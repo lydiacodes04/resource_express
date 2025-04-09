@@ -40,3 +40,8 @@ app.listen(PORT, () => {
 });
 
 //connecting project to Google Cloud on 4/7
+
+//next steps:
+//Install Node.js to launch the application
+// Install MongoDB so the server can interact with the database
+// Install Git to be able to upload our code to the server
