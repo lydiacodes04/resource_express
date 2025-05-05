@@ -12,7 +12,7 @@ const cors = require("cors");
 
 // const errorHandler = require("./middlewares/error-handler");
 
-const { requestLogger, errorLogger } = require("./logger");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const NotFoundError = require("./errors/not-found-error");
 
