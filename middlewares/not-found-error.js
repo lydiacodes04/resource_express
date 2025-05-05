@@ -1,5 +1,3 @@
-const jwt = require("jsonwebtoken");
-
 class NotFoundError extends Error {
   constructor(message) {
     super(message);

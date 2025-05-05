@@ -12,6 +12,8 @@ const cors = require("cors");
 
 // const errorHandler = require("./middlewares/error-handler");
 
+const NotFoundError = require("./errors/not-found-error");
+
 const { errors } = require("celebrate");
 
 app.use(cors());
@@ -37,23 +39,18 @@ app.use(routes);
 // app.use(errors()); // celebrate error handler
 // app.use(errorHandler); //centralized error handler
 
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+
+  res.status(statusCode).send({
+    message: statusCode === 500 ? "An error occurred on the server" : message,
+  });
+});
+
+app.use((req, res, next) => {
+  next(new NotFoundError("Requested resource not found"));
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-//connecting project to Google Cloud on 4/7
-
-//next steps:
-//1. Install Node.js to launch the application
-//working on this 4/9
-// successfully installed Node.js on VM with assistance from Dot
-
-// 2. Install MongoDB so the server can interact with the database
-// successfully installed MongoDB
-
-// 3. Install Git to be able to upload our code to the server
-// successfully installed Git
-
-//committed to commits
-//4. Launch server
-//done on 4/12
