@@ -8,3 +8,11 @@ The What to Wear(WTWR) back-end project utilizes Express to create a server for 
 
 ### Testing
 Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+
+This app is a fullstack application, utilizing React for the frontend, working in Vite with HMR and some ESLint rules. It utilizes a custom-made backend, which uses Express.
+
+Frontend domain:
+(https://wwww.wtwr4me.justlearning.net) 
+
+Backend domain:
+(https://api.wtwr4me.justlearning.net) 
