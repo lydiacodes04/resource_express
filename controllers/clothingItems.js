@@ -1,30 +1,23 @@
-const {
-  BAD_REQUEST_ERROR_CODE,
-  FORBIDDEN_ERROR_CODE,
-  NONEXISTENT_ERROR_CODE,
-  DEFAULT_ERROR_CODE,
-} = require("../utils/errors");
+const BadRequestError = require("../errors/bad-request-error");
+const ForbiddenError = require("../errors/forbidden-error");
+const NotFoundError = require("../errors/not-found-error");
 
 const clothingItem = require("../models/clothingItem");
 
-const getAllItems = (req, res) => {
+const getAllItems = (req, res, next) => {
   clothingItem
     .find()
-    .then((clothingItems) => res.status(201).send(clothingItems))
+    .then((clothingItems) => res.status(200).send(clothingItems))
     .catch((err) => {
-      console.error(err);
       if (err.name === "ValidationError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
+        next(new BadRequestError("Invalid data"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(err);
     });
 };
 
-const createItem = (req, res) => {
+const createItem = (req, res, next) => {
   const { name, imageUrl, weather } = req.body;
   const owner = req.user._id;
 
@@ -32,52 +25,35 @@ const createItem = (req, res) => {
     .create({ name, imageUrl, weather, owner })
     .then((clothingItem) => res.status(201).send(clothingItem))
     .catch((err) => {
-      console.error(err);
       if (err.name === "ValidationError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
+        next(new BadRequestError("Invalid data"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(err);
     });
 };
 
-const deleteItem = (req, res) => {
+const deleteItem = (req, res, next) => {
   clothingItem
     .findById(req.params.itemId)
     .orFail()
     .then((item) => {
       if (item.owner.toString() !== req.user._id) {
-        const error = new Error();
-        error.name = "ForbiddenError";
-        throw error;
+        throw new ForbiddenError("Access forbidden");
       }
-      return item
-        .deleteOne()
-        .then((deletedItem) => res.status(201).send(deletedItem));
+      return item.deleteOne();
     })
+    .then((deletedItem) => res.status(200).send(deletedItem)) // Changed to 200 for DELETE
     .catch((err) => {
-      console.error(err);
       if (err.name === "CastError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
-      }
-      if (err.name === "ForbiddenError") {
-        return res
-          .status(FORBIDDEN_ERROR_CODE)
-          .send({ message: "Access forbidden" });
+        next(new BadRequestError("Invalid data"));
+        return;
       }
       if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(NONEXISTENT_ERROR_CODE)
-          .send({ message: "Requested resource not found" });
+        next(new NotFoundError("Requested resource not found"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(err);
     });
 };
 

@@ -21,7 +21,6 @@ router.post(
         .pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])/),
     },
   }),
-  auth,
   createUser,
 );
 
