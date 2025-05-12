@@ -1,6 +1,7 @@
 const BadRequestError = require("../errors/bad-request-error");
 const ForbiddenError = require("../errors/forbidden-error");
 const NotFoundError = require("../errors/not-found-error");
+const InternalServerError = require("../errors/internal-server-error");
 
 const clothingItem = require("../models/clothingItem");
 
@@ -13,7 +14,11 @@ const getAllItems = (req, res, next) => {
         next(new BadRequestError("Invalid data"));
         return;
       }
-      next(err);
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
 };
 
@@ -29,7 +34,11 @@ const createItem = (req, res, next) => {
         next(new BadRequestError("Invalid data"));
         return;
       }
-      next(err);
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
 };
 
@@ -53,7 +62,11 @@ const deleteItem = (req, res, next) => {
         next(new NotFoundError("Requested resource not found"));
         return;
       }
-      next(err);
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
 };
 
