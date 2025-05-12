@@ -28,7 +28,7 @@ const createItem = (req, res, next) => {
 
   clothingItem
     .create({ name, imageUrl, weather, owner })
-    .then((clothingItem) => res.status(201).send(clothingItem))
+    .then((newClothingItem) => res.status(201).send(newClothingItem))
     .catch((err) => {
       if (err.name === "ValidationError") {
         next(new BadRequestError("Invalid data"));

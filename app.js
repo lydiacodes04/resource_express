@@ -10,6 +10,7 @@ const app = express();
 
 const cors = require("cors");
 
+const { errors } = require("celebrate");
 const BadRequestError = require("./errors/bad-request-error");
 const NotFoundError = require("./errors/not-found-error");
 const UnauthorizedError = require("./errors/unauthorized-error");
@@ -18,7 +19,6 @@ const ConflictError = require("./errors/conflict-error");
 
 const { requestLogger, errorLogger } = require("./errors/logger");
 
-const { errors } = require("celebrate");
 
 app.use(cors());
 
@@ -35,18 +35,18 @@ app.use(express.json());
 
 app.use(requestLogger);
 
-app.use(routes); //regular routes
+app.use(routes); // regular routes
 
 app.use(errorLogger);
 
 app.use(errors()); // celebrate error handler
 
-//404 handler
+// 404 handler
 app.use((req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
 });
 
-//general error handler
+// general error handler
 app.use((err, req, res, next) => {
   console.error(err);
   if (err.statusCode) {

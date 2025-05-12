@@ -43,7 +43,7 @@ const validateURL = (value, helpers) => {
   return helpers.error("string.uri");
 };
 
-module.exports.validateCardBody = celebrate({
+const validateCardBody = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30).messages({
       "string.min": 'The minimum length of the "name" field is 2',
@@ -58,48 +58,19 @@ module.exports.validateCardBody = celebrate({
   }),
 });
 
-module.exports.validateId = celebrate({
+const validateId = celebrate({
   params: Joi.object().keys({
-    // ...
+    id: Joi.string().required().hex(24),
   }),
 });
 
-router.post(
-  "/posts",
-  celebrate({
-    body: Joi.object().keys({
-      title: Joi.string().required().min(2).max(30),
-      text: Joi.string().required().min(2),
-    }),
-  }),
-  createPost,
-);
-
-router.delete(
-  "/:postId",
-  celebrate({
-    // validate parameters
-    params: Joi.object().keys({
-      postId: Joi.string().alphanum().length(24),
-    }),
-    headers: Joi.object().keys({
-      // validate headers
-    }),
-    query: Joi.object().keys({
-      // validate query
-    }),
-  }),
-  deletePost,
-);
-
-router.delete(
-  "/:postId",
-  celebrate({
-    headers: Joi.object()
-      .keys({
-        // validate headers
-      })
-      .unknown(true),
-  }),
-  deletePost,
-);
+module.exports = {
+  validateClothingItem,
+  validateUserInfo,
+  validateUserLogin,
+  validateUserID,
+  validateClothingItemID,
+  validateURL,
+  validateCardBody,
+  validateId,
+};
