@@ -1,12 +1,10 @@
 const clothingItem = require("../models/clothingItem");
 
-const {
-  BAD_REQUEST_ERROR_CODE,
-  NONEXISTENT_ERROR_CODE,
-  DEFAULT_ERROR_CODE,
-} = require("../utils/errors");
+const BadRequestError = require("../errors/bad-request-error");
+const NotFoundError = require("../errors/not-found-error");
+const InternalServerError = require("../errors/internal-server-error");
 
-module.exports.likeItem = (req, res) =>
+const likeItem = (req, res, next) =>
   clothingItem
     .findByIdAndUpdate(
       req.params.itemId,
@@ -18,21 +16,21 @@ module.exports.likeItem = (req, res) =>
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(NONEXISTENT_ERROR_CODE)
-          .send({ message: "Requested resource not found" });
+        next(new NotFoundError("Requested resource not found"));
+        return;
       }
       if (err.name === "CastError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
+        next(new BadRequestError("Invalid data"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
 
-module.exports.disLikeItem = (req, res) =>
+const disLikeItem = (req, res) =>
   clothingItem
     .findByIdAndUpdate(
       req.params.itemId,
@@ -44,16 +42,21 @@ module.exports.disLikeItem = (req, res) =>
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(NONEXISTENT_ERROR_CODE)
-          .send({ message: "Requested resource not found" });
+        next(new NotFoundError("Requested resource not found"));
+        return;
       }
       if (err.name === "CastError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
+        next(new BadRequestError("Invalid data"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
+
+module.exports = {
+  likeItem,
+  disLikeItem,
+};
