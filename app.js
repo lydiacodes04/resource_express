@@ -11,11 +11,7 @@ const app = express();
 const cors = require("cors");
 
 const { errors } = require("celebrate");
-const BadRequestError = require("./errors/bad-request-error");
-const NotFoundError = require("./errors/not-found-error");
-const UnauthorizedError = require("./errors/unauthorized-error");
-const ForbiddenError = require("./errors/forbidden-error");
-const ConflictError = require("./errors/conflict-error");
+
 const errorHandler = require("./errors/error-handler");
 
 const { requestLogger, errorLogger } = require("./errors/logger");
@@ -47,41 +43,7 @@ app.use(errorLogger);
 
 app.use(errors()); // celebrate error handler
 
-// general error handler
-app.use((err, req, res, next) => {
-  console.error(err);
-  if (err.statusCode) {
-    next(new errorHandler());
-    return;
-  }
-
-  // Handle celebrate validation errors
-  if (err.joi) {
-    return res.status(400).json({ message: err.joi.message });
-  }
-
-  // Handle your custom errors
-  if (err instanceof BadRequestError) {
-    return res.status(400).json({ message: err.message });
-  }
-  if (err instanceof UnauthorizedError) {
-    return res.status(401).json({ message: err.message });
-  }
-  if (err instanceof ForbiddenError) {
-    return res.status(403).json({ message: err.message });
-  }
-  if (err instanceof NotFoundError) {
-    return res.status(404).json({ message: err.message });
-  }
-  if (err instanceof ConflictError) {
-    return res.status(409).json({ message: err.message });
-  }
-
-  // Default error
-  return res.status(500).json({
-    message: "An error occurred on the server",
-  });
-});
+app.use(errorHandler); // general error handler
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,12 +1,12 @@
 const router = require("express").Router();
 
+const { errors } = require("celebrate");
 const clothingItem = require("./clothingItems");
 
 const users = require("./users");
 
 const likes = require("./likes");
 
-const { errors } = require("celebrate");
 
 const NotFoundError = require("../errors/not-found-error");
 
@@ -29,7 +29,7 @@ router.use(errors());
 
 router.use((req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
-  return;
+  
 });
 
 router.use((err, req, res, next) => {

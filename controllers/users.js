@@ -73,7 +73,7 @@ const getCurrentUser = (req, res, next) => {
         next(new NotFoundError("Requested resource not found"));
         return;
       }
-      //This was a "cast error" but also linked to "BadRequestError"
+      // This was a "cast error" but also linked to "BadRequestError"
       if (err.name === "ValidationError") {
         next(new BadRequestError("Invalid data"));
         return;
