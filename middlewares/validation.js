@@ -33,7 +33,7 @@ const validateUserID = celebrate({
 
 const validateClothingItemID = celebrate({
   params: Joi.object().keys({
-    itemID: Joi.string().required().length(24).hex(),
+    itemId: Joi.string().required().length(24).hex(),
   }),
 });
 
