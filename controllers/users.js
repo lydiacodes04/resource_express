@@ -6,15 +6,13 @@ const User = require("../models/user");
 
 const { JWT_SECRET } = require("../utils/config");
 
-const {
-  BAD_REQUEST_ERROR_CODE,
-  NONEXISTENT_ERROR_CODE,
-  DEFAULT_ERROR_CODE,
-  CONFLICT_ERROR_CODE,
-  UNAUTHORIZED_ERROR_CODE,
-} = require("../utils/errors");
+const BadRequestError = require("../errors/bad-request-error");
+const NotFoundError = require("../errors/not-found-error");
+const InternalServerError = require("../errors/internal-server-error");
+const ConflictError = require("../errors/conflict-error");
+const UnauthorizedError = require("../errors/unauthorized-error");
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, avatarUrl, email, password } = req.body;
 
   bcrypt
@@ -26,22 +24,22 @@ const createUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
+        next(new BadRequestError("Invalid data"));
+        return;
       }
       if (err.code === 11000) {
-        return res
-          .status(CONFLICT_ERROR_CODE)
-          .send({ message: "Duplicate error" });
+        next(new ConflictError("a conflict error has occurred"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findUserByCredentials(email, password)
@@ -54,39 +52,41 @@ const login = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.message === "Incorrect email or password") {
-        return res
-          .status(UNAUTHORIZED_ERROR_CODE)
-          .send({ message: "Authorization Required" });
+        next(new UnauthorizedError("Authorization Required"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res
-          .status(NONEXISTENT_ERROR_CODE)
-          .send({ message: "Requested resource not found" });
+        next(new NotFoundError("Requested resource not found"));
+        return;
       }
-      if (err.name === "CastError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
+      //This was a "cast error" but also linked to "BadRequestError"
+      if (err.name === "ValidationError") {
+        next(new BadRequestError("Invalid data"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
 };
 
-const updateProfile = (req, res) => {
+const updateProfile = (req, res, next) => {
   User.findByIdAndUpdate(
     { _id: req.user._id },
     { name: req.body.name, avatar: req.body.avatar },
@@ -97,13 +97,14 @@ const updateProfile = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res
-          .status(BAD_REQUEST_ERROR_CODE)
-          .send({ message: "Invalid data" });
+        next(new BadRequestError("Invalid data"));
+        return;
       }
-      return res
-        .status(DEFAULT_ERROR_CODE)
-        .send({ message: "An error has occurred on the server." });
+      next(
+        new InternalServerError(
+          "An error occurred while processing your request",
+        ),
+      );
     });
 };
 

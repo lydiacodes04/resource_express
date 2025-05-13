@@ -52,7 +52,7 @@ const deleteItem = (req, res, next) => {
       }
       return item.deleteOne();
     })
-    .then((deletedItem) => res.status(200).send(deletedItem)) // Changed to 200 for DELETE
+    .then((deletedItem) => res.status(200).send(deletedItem))
     .catch((err) => {
       if (err.name === "CastError") {
         next(new BadRequestError("Invalid data"));
