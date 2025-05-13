@@ -19,7 +19,6 @@ const ConflictError = require("./errors/conflict-error");
 
 const { requestLogger, errorLogger } = require("./errors/logger");
 
-
 app.use(cors());
 
 mongoose
@@ -40,11 +39,6 @@ app.use(routes); // regular routes
 app.use(errorLogger);
 
 app.use(errors()); // celebrate error handler
-
-// 404 handler
-app.use((req, res, next) => {
-  next(new NotFoundError("Requested resource not found"));
-});
 
 // general error handler
 app.use((err, req, res, next) => {

@@ -30,7 +30,7 @@ const likeItem = (req, res, next) =>
       );
     });
 
-const disLikeItem = (req, res) =>
+const disLikeItem = (req, res, next) =>
   clothingItem
     .findByIdAndUpdate(
       req.params.itemId,

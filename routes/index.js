@@ -6,22 +6,26 @@ const users = require("./users");
 
 const likes = require("./likes");
 
-const { NONEXISTENT_ERROR_CODE } = require("../utils/errors");
+const NotFoundError = require("../errors/not-found-error");
+
+const {
+  validateUserInfo,
+  validateUserLogin,
+} = require("../middlewares/validation");
 
 const { createUser, login } = require("../controllers/users");
 
-router.post("/signin", login);
+router.post("/signin", validateUserLogin, login);
 
-router.post("/signup", createUser);
+router.post("/signup", validateUserInfo, createUser);
 
 router.use("/items", clothingItem);
 router.use("/users", users);
 router.use("/items", likes);
 
-router.use((req, res) => {
-  res
-    .status(NONEXISTENT_ERROR_CODE)
-    .send({ message: "Requested resource not found" });
+router.use((req, res, next) => {
+  next(new NotFoundError("Requested resource not found"));
+  return;
 });
 
 module.exports = router;
