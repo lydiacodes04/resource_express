@@ -16,6 +16,7 @@ const NotFoundError = require("./errors/not-found-error");
 const UnauthorizedError = require("./errors/unauthorized-error");
 const ForbiddenError = require("./errors/forbidden-error");
 const ConflictError = require("./errors/conflict-error");
+const errorHandler = require("./errors/error-handler");
 
 const { requestLogger, errorLogger } = require("./errors/logger");
 
@@ -50,7 +51,8 @@ app.use(errors()); // celebrate error handler
 app.use((err, req, res, next) => {
   console.error(err);
   if (err.statusCode) {
-    return res.status(err.statusCode).send({ message: err.message });
+    next(new errorHandler());
+    return;
   }
 
   // Handle celebrate validation errors
