@@ -44,6 +44,13 @@ const validateURL = (value, helpers) => {
   return helpers.error("string.uri");
 };
 
+const validateUpdateUser = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    avatar: Joi.string().uri(),
+  }),
+});
+
 module.exports = {
   validateClothingItem,
   validateUserInfo,
@@ -51,4 +58,5 @@ module.exports = {
   validateUserID,
   validateClothingItemID,
   validateURL,
+  validateUpdateUser,
 };
