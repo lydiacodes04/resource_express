@@ -54,6 +54,10 @@ const deleteItem = (req, res, next) => {
     })
     .then((deletedItem) => res.status(200).send(deletedItem))
     .catch((err) => {
+      if (err.statusCode === 403) {
+        next(new ForbiddenError("Access forbidden"));
+        return;
+      }
       if (err.name === "CastError") {
         next(new BadRequestError("Invalid data"));
         return;
