@@ -10,8 +10,6 @@ const app = express();
 
 const cors = require("cors");
 
-const { errors } = require("celebrate");
-
 const errorHandler = require("./errors/error-handler");
 
 const { requestLogger, errorLogger } = require("./errors/logger");
