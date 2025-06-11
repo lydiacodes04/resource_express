@@ -71,4 +71,4 @@ app.listen(PORT, () => {
 // commit 6/7
 // commit 6/8 did not save! :( )
 // commit 6/9
-// commit 6/10
+// commit 6/10 worked with Dot to get page to show again (pathing issue)
