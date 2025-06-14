@@ -74,3 +74,4 @@ app.listen(PORT, () => {
 // commit 6/10 worked with Dot to get page to show again (pathing issue)
 // commit 6/11 cont working on final project
 // commit 6/12
+// commit 6/13
