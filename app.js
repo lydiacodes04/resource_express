@@ -80,4 +80,4 @@ app.listen(PORT, () => {
 // commit 6/16 worked on project for about 3hr. got website showing.
 // commit 6/17
 // commit 6/18
-// commit 6/19 work on connecting API
+// commit 6/19 work on connecting API. still working.
