@@ -84,3 +84,4 @@ app.listen(PORT, () => {
 // commit 6/20 today I am going to try to set up the MVP for the final project.
 // Basically just want to have something show up for my frontend...(later on 6/20) I did it!
 // Frontend is showing up. Starting to draft the layout.
+// commit 6/21
