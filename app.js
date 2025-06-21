@@ -82,4 +82,5 @@ app.listen(PORT, () => {
 // commit 6/18
 // commit 6/19 work on connecting API. still working. done for the night.
 // commit 6/20 today I am going to try to set up the MVP for the final project.
-// Basically just want to have something show up for my frontend
+// Basically just want to have something show up for my frontend...(later on 6/20) I did it!
+// Frontend is showing up. Starting to draft the layout.
