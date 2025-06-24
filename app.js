@@ -86,4 +86,4 @@ app.listen(PORT, () => {
 // Frontend is showing up. Starting to draft the layout.
 // commit 6/21
 // commit 6/22
-// commit 6/23; did review lesson on positioning
+// commit 6/23; did review lesson on positioning. continued styling site main page and created search bar
