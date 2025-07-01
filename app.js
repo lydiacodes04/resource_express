@@ -53,11 +53,5 @@ app.listen(PORT, () => {
 //commit 5/19
 // 5/19-5/31
 // no commits saved for 6/1 even though I did make commits to the branch I was working on
-// commits 6/2-6/23
-// commit 6/24
-// commit 6/25
-// commit 6/26
-// commit 6/27
-// commit 6/28
-// commit 6/29
-// commit 6/30
+// commits 6/2-6/30
+// commit 6/30, got search function to work and first item card to appear
