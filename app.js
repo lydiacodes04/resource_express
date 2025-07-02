@@ -55,3 +55,4 @@ app.listen(PORT, () => {
 // no commits saved for 6/1 even though I did make commits to the branch I was working on
 // commits 6/2-6/30
 // commit 6/30, got search function to work and first item card to appear
+// commit 7/1
