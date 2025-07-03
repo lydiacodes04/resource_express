@@ -56,4 +56,4 @@ app.listen(PORT, () => {
 // commits 6/2-6/30
 // commit 6/30, got search function to work and first item card to appear
 // commit 7/1, formatted Item Cards so that the resources display like cards. Worked on display of Main a bit as well.
-// commit 7/2
+// commit 7/2, stopping point for the day. got /profile and / routes to work. Need to work on some formatting issues and messages to pop up for users.
