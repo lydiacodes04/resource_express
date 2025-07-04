@@ -60,3 +60,4 @@ app.listen(PORT, () => {
 // commit 7/3
 // worked on final project: getting resource cards to appear horizontally,
 // getting footer to remain at the bottom of the page without absolute positioning.
+// "work on refining final project more; remove unnecessary components and code. improve alt tags"
