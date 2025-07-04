@@ -63,3 +63,4 @@ app.listen(PORT, () => {
 // "work on refining final project more; remove unnecessary components and code. improve alt tags"
 // commit 7/4
 // work on UI and responsive design
+//commit 7/4, 2.0
