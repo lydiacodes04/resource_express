@@ -62,3 +62,4 @@ app.listen(PORT, () => {
 // getting footer to remain at the bottom of the page without absolute positioning.
 // "work on refining final project more; remove unnecessary components and code. improve alt tags"
 // commit 7/4
+// work on UI and responsive design
