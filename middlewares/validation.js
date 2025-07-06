@@ -3,7 +3,7 @@ const validator = require("validator");
 
 const validateClothingItem = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
+    name: Joi.string().required().min(2).max(40),
     imageUrl: Joi.string().required().uri(),
     category: Joi.string().required().valid("basic needs", "jobs", "education"),
   }),
@@ -11,7 +11,7 @@ const validateClothingItem = celebrate({
 
 const validateUserInfo = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
+    name: Joi.string().required().min(2).max(40),
     avatar: Joi.string().required().uri(),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
