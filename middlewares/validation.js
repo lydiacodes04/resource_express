@@ -5,7 +5,7 @@ const validateClothingItem = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     imageUrl: Joi.string().required().uri(),
-    weather: Joi.string().required().valid("hot", "warm", "cold"),
+    category: Joi.string().required().valid("basic needs", "jobs", "education"),
   }),
 });
 

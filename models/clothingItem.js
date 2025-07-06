@@ -9,11 +9,11 @@ const clothingItem = new mongoose.Schema({
     minlength: 2,
     maxlength: 30,
   },
-  weather: {
+  category: {
     type: String,
     required: true,
     enum: {
-      values: ["hot", "warm", "cold"],
+      values: ["basic needs", "jobs", "education"],
     },
   },
 

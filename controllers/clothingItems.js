@@ -23,11 +23,11 @@ const getAllItems = (req, res, next) => {
 };
 
 const createItem = (req, res, next) => {
-  const { name, imageUrl, weather } = req.body;
+  const { name, imageUrl, category } = req.body;
   const owner = req.user._id;
 
   clothingItem
-    .create({ name, imageUrl, weather, owner })
+    .create({ name, imageUrl, category, owner })
     .then((newClothingItem) => res.status(201).send(newClothingItem))
     .catch((err) => {
       if (err.name === "ValidationError") {
