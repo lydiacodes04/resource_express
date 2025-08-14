@@ -68,6 +68,7 @@ app.get("/api/radius", async(req, res) => {
     //2nd api call to get the locations within the search radius
     const response = await fetch(`https://www.mapquestapi.com/search/v2/search?key=${API_KEY}&shapePoints=${lat},${long}&distance=${radius}&distanceUnit=m`);
 
+    // jsoning final data from response to be readable on the frontend
     const finalData = await response.json();
     res.json(finalData);
 
